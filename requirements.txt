@@ -1,12 +1,7 @@
 streamlit
-opencv-python
+opencv-python-headless
 numpy
 scikit-learn
 joblib
 tensorflow
-transformers
-torch 
-kivy
-opencv-python
-mediapipe
-tensorflow 
+mediapipe 
