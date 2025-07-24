@@ -130,6 +130,31 @@ def train_cnn_classifier(X, y):
     print('CNN model and label encoder saved.')
     return model, le
 
+def train_lstm_classifier(X, y):
+    le = LabelEncoder()
+    y_enc = le.fit_transform(y)
+    y_cat = to_categorical(y_enc)
+    X_train, X_test, y_train, y_test = train_test_split(X, y_cat, test_size=0.2, random_state=42)
+    model = Sequential([
+        Masking(mask_value=0., input_shape=(SEQ_LEN, 63)),
+        LSTM(128, return_sequences=True),
+        Dropout(0.3),
+        LSTM(64),
+        Dropout(0.3),
+        Dense(128, activation='relu'),
+        Dense(y_cat.shape[1], activation='softmax')
+    ])
+    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+    model.fit(X_train, y_train, epochs=30, batch_size=16, validation_data=(X_test, y_test))
+    # Evaluate
+    loss, acc = model.evaluate(X_test, y_test)
+    print(f'Test accuracy: {acc*100:.2f}%')
+    # Save model and label encoder
+    model.save('src/sign_word_lstm.h5')
+    joblib.dump(le, 'src/label_encoder.joblib')
+    print('LSTM model and label encoder saved.')
+    return model, le
+
 def main():
     selected_words = get_selected_words()
     print(f'Training on words: {selected_words}')
@@ -137,7 +162,9 @@ def main():
     print(f'Found {len(samples)} video samples.')
     X, y = build_dataset(samples)
     print(f'Dataset shape: {X.shape}, Labels: {set(y)}')
-    train_cnn_classifier(X, y)
+    # Choose which model to train:
+    # train_cnn_classifier(X, y)
+    train_lstm_classifier(X, y)
 
 if __name__ == '__main__':
     main() 
