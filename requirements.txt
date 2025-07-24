@@ -3,6 +3,6 @@ opencv-python-headless
 numpy
 scikit-learn
 joblib
-tensorflow
+tensorflow==2.12.0
 mediapipe
 seaborn 
