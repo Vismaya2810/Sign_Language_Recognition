@@ -4,7 +4,7 @@ import os
 WLASL_JSON = 'resource/WLASL_v0.3.json'
 VIDEO_DIR = 'resource/videos'
 # WORDS = ['before', 'bowling', 'go', 'trade', 'candy']
-WORDS = ['now', 'drink','water']
+WORDS = ['now', 'mother','basketball','play']
 
 # Get set of available video filenames (without .mp4)
 available_videos = {f[:-4] for f in os.listdir(VIDEO_DIR) if f.endswith('.mp4')}
